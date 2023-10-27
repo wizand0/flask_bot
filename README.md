@@ -77,3 +77,7 @@ http://localhost:5000
 - SQL-ALchemy
 - Telegram api
 
+
+- C:\Users\xabor\PycharmProjects\flask\TODO-app> docker build --tag python-docker .
+
+- PS C:\Users\xabor\PycharmProjects\flask\TODO-app> docker run -d -p 5000:5000 python-docker
