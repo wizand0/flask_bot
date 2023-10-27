@@ -1,0 +1,52 @@
+
+
+body {
+    margin: 0;
+    font-family: sans-serif;
+    background-color: darksalmon;
+    text-align: center;
+}
+
+/* table clean look with border all sides and excel look and center */
+
+table {
+    border-collapse: collapse;
+    width: 50%;
+    border: 1px solid #000000;
+    font-size: 14px;
+    margin: 30px auto;
+}
+
+.tablediv {
+   text-align: center;
+    margin: auto;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+    border: 1px solid #000000;
+}
+
+th {
+    background-color: #594caf;
+    font-size: large;
+    color: white;
+}
+tr:nth-child(even){background-color: #f2f2f2}
+tr:nth-child(odd){background-color: #b2b0af}
+
+
+form {
+    margin: 30px auto;
+    width: 50%;
+    border: 1px solid #000000;
+    padding: 10px;
+    background-color: #ffffff;
+}
+input {
+    padding: 10px 20px;
+    margin: 5px;
+    border-radius: 5px;
+    border: 1px solid #000000;
+}
