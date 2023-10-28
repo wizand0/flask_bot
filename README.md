@@ -1,6 +1,6 @@
 # TODO App
 
-### This is an Introduction to flask. This repo contains a simple web app (TODO) using flask to get started in flask.
+### This is an Introduction to flask. This repo contains a simple web app (TODO) and log for sensors based on arduino uno using flask to get started in flask.
 
 
 ## 📝 Table of Contents

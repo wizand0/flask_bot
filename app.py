@@ -1,10 +1,24 @@
 from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from flask_mail import Mail, Message
+from flask_migrate import Migrate
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'  # IMP
+app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'test@gmail.com'  # введите свой адрес электронной почты здесь
+app.config['MAIL_DEFAULT_SENDER'] = 'test@gmail.com'  # и здесь
+app.config['MAIL_PASSWORD'] = 'password'  # введите пароль
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+
+mail = Mail(app)
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(128))
 
 
 class Todo(db.Model):
@@ -14,6 +28,10 @@ class Todo(db.Model):
 
     def __repr__(self):
         return '<Task %r>' % self.id
+
+
+
+
 
 
 class Sensors(db.Model):
