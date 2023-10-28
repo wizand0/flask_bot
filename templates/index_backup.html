@@ -51,17 +51,15 @@
     </table>
 
 
-
-<div class="form">
-<form action="/" method="post" >
+    <form action="/" method="post">
         <input type="text" name="content" id="content" placeholder="Enter task" />
         <input type="submit" value="Add task" />
     </form>
-    </div>
+</div>
 
 
-    <div class="chartdiv" style="height: 50vh;">
-        <canvas id="myChart">
+    <div class="tablediv" style="height: 50vh; width: 57%;">
+        <canvas id="myChart"></canvas>
 
 
     <script>
@@ -69,38 +67,15 @@
         const data = {
             labels: labels,
             datasets: [{
-                label: 'График температуры',
-
-                backgroundColor: 'crimson',
-                borderColor: 'crimson',
+                label: 'Графики температуры и нарпяжения сети',
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
                 data: {{ data | tojson}},
-                borderWidth: 5,
-                cubicInterpolationMode: 'monotone',
-            },
-            {
-                label: 'График напряжения сети',
-
-                backgroundColor: 'Chocolate',
-                borderColor: 'Chocolate',
-                data: {{ voltage | tojson}},
-                borderWidth: 5,
-                cubicInterpolationMode: 'monotone',
-            },
-            {
-                label: 'График влажности',
-
-                backgroundColor: 'LimeGreen',
-                borderColor: 'LimeGreen',
-                data: {{ humidity | tojson}},
-                borderWidth: 5,
-                cubicInterpolationMode: 'monotone',
-            }
-            ]
+            }]
         };
         const config = {
             type: 'line',
             data: data,
-
             options: { maintainAspectRatio: false }
         };
         const myChart = new Chart(
@@ -109,7 +84,7 @@
         );
     </script>
             </div>
-</canvas>
+
 
 
 

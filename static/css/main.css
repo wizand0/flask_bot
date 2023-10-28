@@ -39,7 +39,8 @@ tr:nth-child(odd){background-color: #b2b0af}
 
 form {
     margin: 30px auto;
-    width: 50%;
+
+    width: 49%;
     border: 1px solid #000000;
     padding: 10px;
     background-color: #ffffff;
@@ -49,4 +50,22 @@ input {
     margin: 5px;
     border-radius: 5px;
     border: 1px solid #000000;
+}
+
+chart {
+    margin: 30px auto;
+    width: 50%;
+    border: 1px solid #000000;
+    padding: 10px;
+    background-color: #ffffff;
+}
+
+.chartdiv {
+
+    border: 1px solid #000000;
+    background-color: #ffffff;
+    width: 50%;
+    height: 50vh;
+    text-align: center;
+    margin: auto;
 }

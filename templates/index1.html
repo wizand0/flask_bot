@@ -1,0 +1,65 @@
+{% extends 'base.html' %} {% block head %} {% endblock %} {% block body %}
+<h1>Task Master</h1>
+
+<div class="tablediv">
+    <table>
+        {%if tasks|length < 1 %} <h3>There are no task to show. Create one below</h3>
+            {% else %}
+
+            <tr>
+                <th>Task</th>
+                <th>Added</th>
+                <th>Actions</th>
+            </tr>
+            {% for task in tasks %}
+            <tr>
+                <td>{{task.content}}</td>
+                <td>{{task.date_created.date()}}</td>
+                <td>
+                    <a href="/delete/{{task.id}}">Delete</a>
+                    <br />
+                    <a href="/update/{{task.id}}">update</a>
+                </td>
+            </tr>
+            {% endfor %}
+    {% endif %}
+    </table>
+
+
+
+    <table>
+        {%if sensor_values|length < 1 %} <h3>There are no values of sensors to show. Create one below</h3>
+            {% else %}
+
+            <tr>
+                <th>Temp</th>
+                <th>Humidity</th>
+                <th>Voltage</th>
+                <th>Added</th>
+
+            </tr>
+            {% for sensor_value in sensor_values %}
+            <tr>
+                <td>{{sensor_value.temp}}</td>
+                <td>{{sensor_value.humidity}}</td>
+                <td>{{sensor_value.voltage}}</td>
+                <td>{{sensor_value.date_send.time()}}</td>
+
+            </tr>
+            {% endfor %}
+    {% endif %}
+    </table>
+
+
+
+
+
+
+
+    <form action="/" method="post">
+        <input type="text" name="content" id="content" placeholder="Enter task" />
+        <input type="submit" value="Add task" />
+    </form>
+</div>
+
+{% endblock %}
