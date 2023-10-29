@@ -1,48 +1,17 @@
-from flask import Flask, render_template, request, redirect
-from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
-from flask_mail import Mail, Message
-from flask_migrate import Migrate
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'  # IMP
-app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'test@gmail.com'  # введите свой адрес электронной почты здесь
-app.config['MAIL_DEFAULT_SENDER'] = 'test@gmail.com'  # и здесь
-app.config['MAIL_PASSWORD'] = 'password'  # введите пароль
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
-
-mail = Mail(app)
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(128))
-
-
-class Todo(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    content = db.Column(db.String(200), nullable=False)
-    date_created = db.Column(db.DateTime, default=datetime.utcnow)
-
-    def __repr__(self):
-        return '<Task %r>' % self.id
+from . import app
+from flask import render_template, request, redirect, url_for, flash, make_response, session
+from flask_login import login_required, login_user,current_user, logout_user
+from .models import User, Todo, Sensors, db
+from .forms import ContactForm, LoginForm
+#from .utils import send_mail
 
 
 
 
 
 
-class Sensors(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    temp = db.Column(db.Float)
-    humidity = db.Column(db.Float)
-    voltage = db.Column(db.Integer)
-    date_send = db.Column(db.DateTime, default=datetime.utcnow)
 
-    def __repr__(self):
-        return '<Value %r>' % self.id
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -59,8 +28,12 @@ def index():
 
     else:
         tasks = Todo.query.order_by(Todo.date_created).all()
-        sensor_values = Sensors.query.order_by(Sensors.date_send).all()
+        sensor_values = Sensors.query.order_by(Sensors.date_send).all()  # - все записи для отрисовки графика
 
+        # sensors_for_tab = Sensors.query.order_by(Sensors.date_send).limit(3)
+        sensors_for_tab = Sensors.query.order_by(Sensors.id.desc()).limit(
+            5)  # последине 5 записей в обратном порядке для таблицы
+        # sensors_for_tab = sensors_for_tab[::-1]
 
         date_value = []
         data = []
@@ -72,13 +45,41 @@ def index():
             voltage.append(row.voltage)
             humidity.append(row.humidity)
 
-
-        #print(sensor_values)
+        # print(sensor_values)
         return render_template('index.html', tasks=tasks, sensor_values=sensor_values, labels2=date_value, data=data,
-                               voltage=voltage, humidity=humidity)  # IMP
+                               voltage=voltage, humidity=humidity, sensors_for_tab=sensors_for_tab)  # IMP
 
 
 # http://127.0.0.1:5000/ard_update?api_key=H20C8OAJ7KXGE3SS&field1=23&field2=44&field3=220&field4=0&field5=0&field6=0 - для тестирования входа API
+
+@app.route('/admin/')
+@login_required
+def admin():
+    return render_template('admin.html')
+
+
+@app.route('/login/', methods=['post', 'get'])
+def login():
+    if current_user.is_authenticated:
+	    return redirect(url_for('admin'))
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = db.session.query(User).filter(User.username == form.username.data).first()
+        if user and user.check_password(form.password.data):
+            login_user(user, remember=form.remember.data)
+            return redirect(url_for('admin'))
+
+        flash("Invalid username/password", 'error')
+        return redirect(url_for('login'))
+    return render_template('login.html', form=form)
+
+
+@app.route('/logout/')
+@login_required
+def logout():
+    logout_user()
+    flash("You have been logged out.")
+    return redirect(url_for('login'))
 
 
 @app.route('/ard_update')
@@ -90,7 +91,7 @@ def ard_update():
 
     if api_key == "H20C8OAJ7KXGE3SS":
 
-        new_values = Sensors(temp=temp, humidity = humidity, voltage = voltage)
+        new_values = Sensors(temp=temp, humidity=humidity, voltage=voltage)
 
         try:
             db.session.add(new_values)
@@ -112,10 +113,6 @@ def ard_update():
 
         return render_template('index.html', tasks=tasks, sensor_values=sensor_values)
         # IMP
-
-
-
-
 
 
 @app.route('/delete/<int:id>')
@@ -150,15 +147,5 @@ def update(id):
     else:
         return render_template('update.html', task=task)
 
-
-
-
-if __name__ == "__main__":
-    app.run(debug=True)
-
-# From Shell
-# from app import db,app
-# app.app_context().push()
-# db.create_all()
 
 
