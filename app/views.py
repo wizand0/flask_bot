@@ -82,6 +82,43 @@ def logout():
     return redirect(url_for('login'))
 
 
+@app.route("/register", methods=["POST", "GET"])
+def register(username=None):
+    if request.method == "POST":
+        session.pop('_flashes', None)
+        if len(request.form['name']) > 4 and len(request.form['username']) > 4 and len(request.form['email']) > 4 \
+                and len(request.form['psw']) > 4 and request.form['psw'] == request.form['psw2']:
+
+            name = request.form['name'] # Form input Name tag
+            email = request.form['email']
+            username = request.form['username']
+            psw = request.form['psw']
+            hash = User.set_password(request.form['psw'])
+
+            new_user = User(name=name, password_hash=hash, email=email, username=username)
+
+            try:
+                db.session.add(new_user)
+                db.session.commit()
+                return redirect("/login/")
+            except:
+                return "Error creating new task."
+
+
+
+
+
+
+
+            #res = dbase.addUser(request.form['name'], request.form['email'], hash)
+
+        else:
+            flash("Неверно заполнены поля", "error")
+
+
+    #return redirect("/")
+
+
 @app.route('/ard_update')
 def ard_update():
     api_key = request.args.get('api_key')
