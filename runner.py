@@ -3,6 +3,9 @@ from app import app
 from app.models import User, Todo, Sensors, db
 
 
+FILENAME = "/data/todo.json" if "AMVERA" in os.environ else "todo.json"
+
+
 
 
 # эти переменные доступны внутри оболочки без явного импорта
