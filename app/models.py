@@ -1,13 +1,14 @@
 from . import db, login_manager
 from datetime import datetime
 from flask_login import (LoginManager, UserMixin, login_required,
-			  login_user, current_user, logout_user)
+                         login_user, current_user, logout_user)
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
 @login_manager.user_loader
 def load_user(user_id):
     return db.session.query(User).get(user_id)
+
 
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
@@ -20,13 +21,13 @@ class User(db.Model, UserMixin):
     updated_on = db.Column(db.DateTime(), default=datetime.utcnow, onupdate=datetime.utcnow)
 
     def __repr__(self):
-	    return "<{}:{}>".format(self.id, self.username)
+        return "<{}:{}>".format(self.id, self.username)
 
     def set_password(self, password):
-	    self.password_hash = generate_password_hash(password)
+        self.password_hash = generate_password_hash(password)
 
     def check_password(self, password):
-	    return check_password_hash(self.password_hash, password)
+        return check_password_hash(self.password_hash, password)
 
 
 class Todo(db.Model):
@@ -47,5 +48,3 @@ class Sensors(db.Model):
 
     def __repr__(self):
         return '<Value %r>' % self.id
-
-

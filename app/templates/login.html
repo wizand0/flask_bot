@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+
+{% block title %} Авторизация {% endblock %}
+
+{% block body %}
 
     {% for category, message in  get_flashed_messages(with_categories=true) %}
 	<spam class="{{ category }}">{{ message }}</spam>
@@ -42,5 +41,4 @@
 		</p>
     </form>
 
-</body>
-</html>
+{% endblock %}

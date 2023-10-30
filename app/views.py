@@ -1,20 +1,16 @@
+from flask import render_template, request, redirect, url_for, flash
+from flask_login import login_required, login_user, current_user, logout_user
 
 from . import app
-from flask import render_template, request, redirect, url_for, flash, make_response, session
-from flask_login import login_required, login_user,current_user, logout_user
+from .forms import LoginForm, RegistrationForm
 from .models import User, Todo, Sensors, db
-from .forms import ContactForm, LoginForm
-#from .utils import send_mail
 
 
-
-
-
-
-
+# from .utils import send_mail
 
 
 @app.route('/', methods=['GET', 'POST'])
+@login_required
 def index():
     if request.method == 'POST':
         task_content = request.form['content']  # Form input Name tag
@@ -61,7 +57,7 @@ def admin():
 @app.route('/login/', methods=['post', 'get'])
 def login():
     if current_user.is_authenticated:
-	    return redirect(url_for('admin'))
+        return redirect(url_for('admin'))
     form = LoginForm()
     if form.validate_on_submit():
         user = db.session.query(User).filter(User.username == form.username.data).first()
@@ -82,43 +78,42 @@ def logout():
     return redirect(url_for('login'))
 
 
-@app.route("/register", methods=["POST", "GET"])
-def register(username=None):
-    if request.method == "POST":
-        session.pop('_flashes', None)
-        if len(request.form['name']) > 4 and len(request.form['username']) > 4 and len(request.form['email']) > 4 \
-                and len(request.form['psw']) > 4 and request.form['psw'] == request.form['psw2']:
+# register route
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    form = RegistrationForm()
 
-            name = request.form['name'] # Form input Name tag
-            email = request.form['email']
-            username = request.form['username']
-            psw = request.form['psw']
-            hash = User.set_password(request.form['psw'])
+    if form.validate_on_submit():
 
-            new_user = User(name=name, password_hash=hash, email=email, username=username)
+        name = form.name.data
 
-            try:
-                db.session.add(new_user)
-                db.session.commit()
-                return redirect("/login/")
-            except:
-                return "Error creating new task."
+        email = form.email.data
 
+        password = form.password.data
 
+        username = form.username.data
 
+        user = User(name=name, username=username, email=email)
 
+        # user = User(username=username, email=email)
+        user.set_password(password)
 
+        db.session.add(user)
 
+        db.session.commit()
 
-            #res = dbase.addUser(request.form['name'], request.form['email'], hash)
+        flash("Registration was successfull, please login")
 
-        else:
-            flash("Неверно заполнены поля", "error")
+        return redirect("/login")
 
+    else:
 
-    #return redirect("/")
+        print("Error form")
+
+    return render_template('registration.html', form=form)
 
 
+#API для добавление в БД данных сенсоров на arduino
 @app.route('/ard_update')
 def ard_update():
     api_key = request.args.get('api_key')
@@ -138,8 +133,6 @@ def ard_update():
             db.session.rollback()
             print("Ошибка добавления данных сенсоров в БД")
             return "Ошибка добавления данных сенсоров в БД"
-
-
 
     else:
 
@@ -183,6 +176,3 @@ def update(id):
 
     else:
         return render_template('update.html', task=task)
-
-
-
