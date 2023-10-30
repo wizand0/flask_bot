@@ -15,7 +15,7 @@ from .forms import ContactForm, LoginForm
 app = Flask(__name__)
 #app.config.from_object(os.environ.get('FLASK_ENV') or 'config.DevelopementConfig')
 
-app.config.from_object('config.DevelopementConfig')
+app.config.from_object('config.ProductionConfig')
 
 # инициализирует расширения
 db = SQLAlchemy(app)
