@@ -12,7 +12,7 @@ FILENAME = "/data/todo.json" if "AMVERA" in os.environ else "todo.json"
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)
 
 # From Shell
 # from app import db,app
