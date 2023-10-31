@@ -3,7 +3,7 @@ import os
 app_dir = os.path.abspath(os.path.dirname(__file__))
 
 class BaseConfig:
-    SECRET_KEY = os.environ.get('SECRET_KEY') or '432efdgeytergarge5t4tasga'
+    SECRET_KEY = os.environ.get('SECRET_KEY') or '432efdgeytqqwe233ergsdfarge5t4234etasga'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     ##### настройка Flask-Mail #####
@@ -36,13 +36,17 @@ class ProductionConfig(BaseConfig):
 	#'mysql+pymysql://root:pass@localhost/flask_app_db'
 
 
+##########
+# Features
+##########
+
 ################
 # Flask-Security
 ################
 
 # URLs
 SECURITY_URL_PREFIX = "/admin"
-SECURITY_LOGIN_URL = "/login_user/"
+SECURITY_LOGIN_URL = "/login/"
 SECURITY_LOGOUT_URL = "/logout/"
 SECURITY_POST_LOGIN_VIEW = "/admin/"
 SECURITY_POST_LOGOUT_VIEW = "/admin/"

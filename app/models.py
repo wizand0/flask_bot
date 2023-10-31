@@ -4,6 +4,8 @@ from flask_login import (LoginManager, UserMixin, login_required,
                          login_user, current_user, logout_user)
 from flask_security import RoleMixin
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_admin import Admin
+from flask_admin.contrib.sqla import ModelView
 
 
 @login_manager.user_loader
@@ -15,6 +17,8 @@ roles_users = db.Table(
     db.Column('user_id', db.Integer(), db.ForeignKey('users.id')),
     db.Column('role_id', db.Integer(), db.ForeignKey('roles.id'))
 )
+
+
 
 
 class Role(db.Model, RoleMixin):
@@ -68,16 +72,18 @@ class User(db.Model, UserMixin):
     def __unicode__(self):
         return self.username
 
-    def set_password(self, password):
-        self.password_hash = generate_password_hash(password)
+    def set_password(self, password_hash):
+        self.password_hash = generate_password_hash(password_hash)
 
     def check_password(self, password):
-        return check_password_hash(self.password, password)
+        return check_password_hash(self.password_hash, password)
 
 # Отвечает за сессию пользователей. Запрещает доступ к роутам, перед которыми указано @login_required
 @login_manager.user_loader
 def load_user(user_id):
     return db.session.query(User).get(user_id)
+
+
 
 
 class Todo(db.Model):

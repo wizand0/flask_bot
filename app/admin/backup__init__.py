@@ -1,7 +1,9 @@
 from flask import url_for, redirect, request, abort
-from ..models import User, Role
+#from ..models import User, Role
+from app.models import User, Role
 # from .. import app
-from .. import app, db, admin
+from app import db, app
+#from .. import app, db, admin
 
 # flask-login
 from flask_login import current_user
@@ -51,6 +53,7 @@ class MyAdminIndexView(flask_admin.AdminIndexView):
 
     @expose('/login/', methods=('GET', 'POST'))
     def login_page(self):
+
         if current_user.is_authenticated:
             return redirect(url_for('.index'))
         return super(MyAdminIndexView, self).index()
@@ -68,8 +71,8 @@ class MyAdminIndexView(flask_admin.AdminIndexView):
 # Create admin
 admin = flask_admin.Admin(app, index_view=MyAdminIndexView(), base_template='admin/master-extended.html')
 
-# Add view
-admin.add_view(MyModelView(User, db.session))
+## Add view
+#admin.add_view(MyModelView(User, db.session))
 
 
 # define a context processor for merging flask-admin's template context into the

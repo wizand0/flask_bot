@@ -9,10 +9,12 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_required, login_user, current_user, logout_user
 from .forms import ContactForm, LoginForm
 
+
+
 # создание экземпляра приложения
 app = Flask(__name__)
 # app.config.from_object(os.environ.get('FLASK_ENV') or 'config.DevelopementConfig')
-
+#app.config.from_object('config.DevelopementConfig')
 app.config.from_object('config.ProductionConfig')
 
 # инициализирует расширения
@@ -23,12 +25,15 @@ migrate = Migrate(app, db)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
+
+
+## Регистрация путей Blueprint
+#from .admin.routes import admin_bp
+#app.register_blueprint(admin_bp, url_prefix="/admin")
+
 # import views
 from . import views
 # from . import forum_views
 # from . import admin_views
 
-# Регистрация путей Blueprint
-from .admin.routes import admin_bp
 
-app.register_blueprint(admin_bp, url_prefix="/admin")
