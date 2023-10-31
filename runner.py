@@ -42,3 +42,7 @@ if __name__ == "__main__":
 # flask db upgrade - Then you can apply the changes described by the migration script to your database
 
 #git push amvera main:master
+
+#https://cloud.amvera.ru/projects/flask-bot
+#git push amvera dev:master --force
+#
