@@ -11,6 +11,7 @@ import logging
 from aiogram import Bot, Dispatcher
 from aiogram.enums.parse_mode import ParseMode
 from aiogram.fsm.storage.memory import MemoryStorage
+from config import BaseConfig
 
 import config
 from app.handlers import router
@@ -19,8 +20,9 @@ from app.handlers import router
 FILENAME = "/data/todo.json" if "AMVERA" in os.environ else "todo.json"
 
 
+
 async def main():
-    bot = Bot(token='6164575119:AAEYx-IP2hSZgf2IpsHLztULW1I55jyhP2Q', parse_mode=ParseMode.HTML)
+    bot = Bot(token=BaseConfig.BOT_TOKEN, parse_mode=ParseMode.HTML)
     dp = Dispatcher(storage=MemoryStorage())
     dp.include_router(router)
     await bot.delete_webhook(drop_pending_updates=True)
