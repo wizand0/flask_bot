@@ -3,14 +3,16 @@ from flask_login import login_required, login_user, current_user, logout_user
 
 from . import app
 from .forms import LoginForm, RegistrationForm
-from .models import User, Todo, Sensors, db
+from . import db
+from .models import User, Todo, Sensors
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 # from .utils import send_mail
 
 
 @app.route('/', methods=['GET', 'POST'])
-@login_required
+
 def index():
     if request.method == 'POST':
         task_content = request.form['content']  # Form input Name tag
@@ -48,13 +50,13 @@ def index():
 
 # http://127.0.0.1:5000/ard_update?api_key=H20C8OAJ7KXGE3SS&field1=23&field2=44&field3=220&field4=0&field5=0&field6=0 - для тестирования входа API
 
-@app.route('/admin/')
-@login_required
-def admin():
-    return render_template('admin.html')
+#@app.route('/admin/')
+#@login_required
+#def admin():
+#    return render_template('admin.html')
 
 
-@app.route('/login/', methods=['post', 'get'])
+@app.route('/login_user', methods=['post', 'get'])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('admin'))
@@ -66,7 +68,7 @@ def login():
             return redirect(url_for('admin'))
 
         flash("Invalid username/password", 'error')
-        return redirect(url_for('login'))
+        return redirect(url_for('login_user'))
     return render_template('login.html', form=form)
 
 
@@ -75,7 +77,7 @@ def login():
 def logout():
     logout_user()
     flash("You have been logged out.")
-    return redirect(url_for('login'))
+    return redirect(url_for('login_user'))
 
 
 # register route
@@ -90,13 +92,17 @@ def register():
         email = form.email.data
 
         password = form.password.data
+        #print(form.password.data)
+
 
         username = form.username.data
 
         user = User(name=name, username=username, email=email)
+        #user.password_hash = generate_password_hash(password)
+
 
         # user = User(username=username, email=email)
-        user.set_password(password)
+        user.password_hash = user.set_password(password)
 
         db.session.add(user)
 
@@ -104,7 +110,7 @@ def register():
 
         flash("Registration was successfull, please login")
 
-        return redirect("/login")
+        return redirect("/login_user")
 
     else:
 

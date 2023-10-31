@@ -34,3 +34,31 @@ class ProductionConfig(BaseConfig):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///prodbd.db'
     #SQLALCHEMY_DATABASE_URI = os.environ.get('PRODUCTION_DATABASE_URI') or \
 	#'mysql+pymysql://root:pass@localhost/flask_app_db'
+
+
+################
+# Flask-Security
+################
+
+# URLs
+SECURITY_URL_PREFIX = "/admin"
+SECURITY_LOGIN_URL = "/login_user/"
+SECURITY_LOGOUT_URL = "/logout/"
+SECURITY_POST_LOGIN_VIEW = "/admin/"
+SECURITY_POST_LOGOUT_VIEW = "/admin/"
+SECURITY_POST_REGISTER_VIEW = "/admin/"
+
+# Включает регистрацию
+SECURITY_REGISTERABLE = True
+SECURITY_REGISTER_URL = "/register/"
+SECURITY_SEND_REGISTER_EMAIL = False
+
+# Включет сброс пароля
+SECURITY_RECOVERABLE = True
+SECURITY_RESET_URL = "/reset/"
+SECURITY_SEND_PASSWORD_RESET_EMAIL = True
+
+# Включает изменение пароля
+SECURITY_CHANGEABLE = True
+SECURITY_CHANGE_URL = "/change/"
+SECURITY_SEND_PASSWORD_CHANGE_EMAIL = False

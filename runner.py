@@ -1,6 +1,7 @@
 import os
 from app import app
 from app.models import User, Todo, Sensors, db
+#import app.admin
 
 
 FILENAME = "/data/todo.json" if "AMVERA" in os.environ else "todo.json"
@@ -12,9 +13,14 @@ FILENAME = "/data/todo.json" if "AMVERA" in os.environ else "todo.json"
 
 
 if __name__ == "__main__":
-    #from waitress import serve
-    #serve(app, host="0.0.0.0", port=8080)
     app.run(debug=False)
+
+
+#if __name__ == '__main__':
+#    with app.app_context():
+#        db.create_all()
+#        app.user_datastore.create_user(email='matt@nobien.net', password='password')
+#    app.run()
 
 # From Shell
 # from app import db,app
@@ -27,3 +33,5 @@ if __name__ == "__main__":
 # flask db migrate -m "Initial migration." - The migration script needs to be reviewed and edited, as Alembic is not
 # #always able to detect every change you make to your models.
 # flask db upgrade - Then you can apply the changes described by the migration script to your database
+
+#git push amvera main:master
