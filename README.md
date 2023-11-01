@@ -15,7 +15,7 @@ For testing
 - [Installation](#installation)
 - [Built Using](#built_using)
 
-## 🧐 About <a name = "about"></a>
+### 🧐 About <a name = "about"></a>
 
 Flask is a micro web framework written in Python. It is classified as a microframework because it does not require particular tools or libraries.
 In this Repo, we will be creating a simple web app (TODO Master).
