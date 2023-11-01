@@ -2,8 +2,7 @@ import os
 from app import app
 from app.models import User, Todo, Sensors, db
 #import app.admin
-from threading import Thread
-from aiohttp import web
+
 
 import asyncio
 import logging
@@ -34,8 +33,8 @@ async def main():
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
 
-    asyncio.run(main())
-    #app.run(debug=False)
+    #asyncio.run(main())
+    app.run(debug=False)
 
 
 
@@ -74,3 +73,6 @@ if __name__ == "__main__":
 #curl --location --request POST 'https://api.telegram.org/bot6164575119:AAEYx-IP2hSZgf2IpsHLztULW1I55jyhP2Q/setWebhook' --header 'Content-Type: application/json' --data-raw '{ "url": "https://flask-bot-xabor.amvera.io"}'
 #curl --location --request POST "https://api.telegram.org/bot6164575119:AAEYx-IP2hSZgf2IpsHLztULW1I55jyhP2Q/setWebhook?url=https://flask-bot-xabor.amvera.io" --header "Content-Type: application/json" --data-raw '{"url": "https://flask-bot-xabor.amvera.io"}'
 #https://api.telegram.org/bot6164575119:AAEYx-IP2hSZgf2IpsHLztULW1I55jyhP2Q/setwebhook?url=https://flask-bot-xabor.amvera.io
+
+
+#https://api.telegram.org/bot6164575119:AAEYx-IP2hSZgf2IpsHLztULW1I55jyhP2Q/sendMessage?chat_id=299472815&text=тдтолидлилил

@@ -4,6 +4,10 @@ from flask_login import login_required, login_user, current_user, logout_user
 
 from . import app
 from app import db, login_manager
+import datetime
+
+import config
+from config import BaseConfig
 
 
 
@@ -14,6 +18,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 
 # from .utils import send_mail
+
+
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -129,22 +135,54 @@ def register():
 @app.route('/ard_update')
 def ard_update():
     api_key = request.args.get('api_key')
-    temp = request.args.get('field1')
-    humidity = request.args.get('field2')
-    voltage = request.args.get('field3')
-
+    temp = float(request.args.get('field1'))
+    humidity = int(request.args.get('field2'))
+    voltage = int(request.args.get('field3'))
     if api_key == "H20C8OAJ7KXGE3SS":
+
+
+        TELEGRAM_URL = "https://api.telegram.org/bot"
+        part_url_for_1 = "/sendMessage?chat_id="
+        chat_id = BaseConfig.CHAT_ID
+        part_url_for_2 = "&text="
+        text = "Внимание: ОТКЛЮЧЕНИЕ ЭЛЕКТРИЧЕСТВА. ДАТА: "
+        BOT_TOKEN = BaseConfig.BOT_TOKEN
+        now = datetime.datetime.now()
+        now_str = str(now)
+        #request_telegram = TELEGRAM_URL + BOT_TOKEN + part_url_for_1 + chat_id + part_url_for_2 + text + now
+        request_telegram = TELEGRAM_URL + BOT_TOKEN + part_url_for_1 + chat_id + part_url_for_2 + text + now_str
+
+
 
         new_values = Sensors(temp=temp, humidity=humidity, voltage=voltage)
 
         try:
             db.session.add(new_values)
             db.session.commit()
-            return redirect("/")
+
         except:
             db.session.rollback()
             print("Ошибка добавления данных сенсоров в БД")
             return "Ошибка добавления данных сенсоров в БД"
+
+        if voltage == 0:
+            text = "Внимание: отключение электричества. Время: "
+            #request_telegram = TELEGRAM_URL + BOT_TOKEN + part_url_for_1 + chat_id + part_url_for_2 + text + now_str
+            return redirect(request_telegram)
+
+        #elif:
+        #elif voltage > 0 and alarm == 1:
+        #    text = "Электроснабжение восстановлено. Дата: "
+        #    #request_telegram = TELEGRAM_URL + BOT_TOKEN + part_url_for_1 + chat_id + part_url_for_2 + text + now_str
+        #    alarm = 0
+        #    return redirect(request_telegram)
+
+        else:
+            return redirect("/")
+
+
+
+        #return redirect(request_telegram)
 
     else:
 
@@ -152,6 +190,12 @@ def ard_update():
         tasks = Todo.query.order_by(Todo.date_created).all()
 
         sensor_values = Sensors.query.order_by(Sensors.date_send).all()
+
+        #https://api.telegram.org/bot6164575119:AAEYx-IP2hSZgf2IpsHLztULW1I55jyhP2Q/sendMessage?chat_id=299472815&text=тдтолидлилил
+
+
+
+
 
         return render_template('index.html', tasks=tasks, sensor_values=sensor_values)
         # IMP
