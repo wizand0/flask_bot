@@ -1,5 +1,7 @@
 # TODO App
 
+## It is a backend for arduino project: https://github.com/wizand0/DC_Monitor_UNO
+
 ### This is an Introduction to flask. This repo contains a simple web app (TODO) and log for sensors based 
 ### on arduino uno using flask to get started in flask.
 ### Шn case of emergency, sends a message to a telegram bot

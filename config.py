@@ -1,12 +1,22 @@
 import os
 
+"""Flask APP configuration."""
+from os import environ, path
+from dotenv import load_dotenv
+
+
+# Specificy a `.env` file containing key/value config values
+basedir = path.abspath(path.dirname(__file__))
+load_dotenv(path.join(basedir, ".env"))
+
+
 app_dir = os.path.abspath(os.path.dirname(__file__))
 
 class BaseConfig:
-    SECRET_KEY = os.environ.get('SECRET_KEY') or '432efdgeytqqwe233ergsdfarge5t4234etasga'
+    SECRET_KEY = environ.get("SECRET_KEY")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    BOT_TOKEN = "6164575119:AAEYx-IP2hSZgf2IpsHLztULW1I55jyhP2Q"
-    CHAT_ID = "299472815"
+    BOT_TOKEN = environ.get("BOT_TOKEN")
+    CHAT_ID = environ.get("CHAT_ID")
 
 
 
@@ -14,8 +24,8 @@ class BaseConfig:
     MAIL_SERVER = 'smtp.googlemail.com'
     MAIL_PORT = 587
     MAIL_USE_TLS = True
-    MAIL_USERNAME = os.environ.get('MAIL_USERNAME') or 'YOU_MAIL@gmail.com'
-    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD') or 'password'
+    MAIL_USERNAME = environ.get("MAIL_USERNAME")
+    MAIL_PASSWORD = environ.get("MAIL_PASSWORD")
     MAIL_DEFAULT_SENDER = MAIL_USERNAME
 
 

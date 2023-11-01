@@ -39,6 +39,8 @@ def index():
         tasks = Todo.query.order_by(Todo.date_created).all()
         sensor_values = Sensors.query.order_by(Sensors.date_send).all()  # - все записи для отрисовки графика
 
+        #sensor_values = Sensors.query.order_by(Sensors.id.desc()).limit(50) # - последние 50 записей для графика
+
         # sensors_for_tab = Sensors.query.order_by(Sensors.date_send).limit(3)
         sensors_for_tab = Sensors.query.order_by(Sensors.id.desc()).limit(
             5)  # последине 5 записей в обратном порядке для таблицы
