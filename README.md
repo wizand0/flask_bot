@@ -1,12 +1,14 @@
 # TODO App
 
-## It is a backend for arduino project: https://github.com/wizand0/DC_Monitor_UNO
+### It is a backend for arduino project: https://github.com/wizand0/DC_Monitor_UNO
 
-### This is an Introduction to flask. This repo contains a simple web app (TODO) and log for sensors based 
-### on arduino uno using flask to get started in flask.
-### Шn case of emergency, sends a message to a telegram bot
+#### This is an Introduction to flask. This repo contains a simple web app (TODO) and log for sensors based 
+#### on arduino uno using flask to get started in flask.
+#### Шn case of emergency, sends a message to a telegram bot
 
-## 📝 Table of Contents
+For testing
+
+### 📝 Table of Contents
 
 - [About](#about)
 - [Getting Started](#getting_started)
@@ -18,7 +20,7 @@
 Flask is a micro web framework written in Python. It is classified as a microframework because it does not require particular tools or libraries.
 In this Repo, we will be creating a simple web app (TODO Master).
 
-## 🏁 Getting Started <a name = "getting_started"></a>
+### 🏁 Getting Started <a name = "getting_started"></a>
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
@@ -31,7 +33,7 @@ The project requires
 - virtualenv. You can download virtualenv from [here](https://virtualenv.pypa.io/en/latest/installation.html)
 
 
-## Installation <a name = "installation"></a>
+### Installation <a name = "installation"></a>
 
 Installing the project is very simple. Just follow the steps below
 
@@ -73,7 +75,7 @@ http://localhost:5000
 
 
 
-## ⛏️ Built Using <a name = "built_using"></a>
+### ⛏️ Built Using <a name = "built_using"></a>
 
 - [Flask](https://flask.palletsprojects.com/en/1.1.x/) - Web Framework
 - [Python](https://www.python.org/) - Programming Language
