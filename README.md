@@ -1,7 +1,8 @@
 # TODO App
 
-### This is an Introduction to flask. This repo contains a simple web app (TODO) and log for sensors based on arduino uno using flask to get started in flask.
-### and also it is a backend for telegrambot for some functions (under constraction)
+### This is an Introduction to flask. This repo contains a simple web app (TODO) and log for sensors based 
+### on arduino uno using flask to get started in flask.
+### Шn case of emergency, sends a message to a telegram bot
 
 ## 📝 Table of Contents
 
@@ -23,7 +24,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 The project requires 
 
-- python 3.6 or higher. You can download python from [here](https://www.python.org/downloads/)
+- python 3.8 or higher. You can download python from [here](https://www.python.org/downloads/)
 - pip. You can download pip from [here](https://pip.pypa.io/en/stable/installing/)
 - virtualenv. You can download virtualenv from [here](https://virtualenv.pypa.io/en/latest/installation.html)
 
@@ -76,9 +77,3 @@ http://localhost:5000
 - [Python](https://www.python.org/) - Programming Language
 - SQL-ALchemy
 - Telegram api
-
-
-- C:\Users\xabor\PycharmProjects\flask\TODO-app> docker build --tag python-docker .
-
-- PS C:\Users\xabor\PycharmProjects\flask\TODO-app> docker run -d -p 5000:5000 python-docker
-"# sensors_blog_and_todo" 
