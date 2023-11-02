@@ -63,7 +63,7 @@ class Sensors(db.Model):
     temp = db.Column(db.Float)
     humidity = db.Column(db.Float)
     voltage = db.Column(db.Integer)
-    date_send = db.Column(db.DateTime, default=datetime.utcnow)
+    date_send = db.Column(db.DateTime, default=datetime.now)
 
     def __repr__(self):
         return '<Value %r>' % self.id
@@ -72,7 +72,7 @@ class Sensors(db.Model):
 class VoltageOff(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     voltage = db.Column(db.Integer)
-    date_send = db.Column(db.DateTime, default=datetime.utcnow)
+    date_send = db.Column(db.DateTime, default=datetime.now)
 
     def __repr__(self):
         return '<Value %r>' % self.id
