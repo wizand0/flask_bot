@@ -12,24 +12,6 @@ from flask_admin.contrib.sqla import ModelView
 def load_user(user_id):
     return db.session.query(User).get(user_id)
 
-roles_users = db.Table(
-    'roles_users',
-    db.Column('user_id', db.Integer(), db.ForeignKey('users.id')),
-    db.Column('role_id', db.Integer(), db.ForeignKey('roles.id'))
-)
-
-
-
-
-class Role(db.Model, RoleMixin):
-    __tablename__ = 'roles'
-    id = db.Column(db.Integer(), primary_key=True)
-    name = db.Column(db.String(80), unique=True)
-    description = db.Column(db.String(255))
-
-    def __str__(self):
-        return self.name
-
 
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
@@ -39,11 +21,6 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(100), nullable=False, unique=True)
     password_hash = db.Column(db.String(100), nullable=False)
     created_on = db.Column(db.DateTime(), default=datetime.utcnow)
-    updated_on = db.Column(db.DateTime(), default=datetime.utcnow, onupdate=datetime.utcnow)
-    # Нужен для security!
-    active = db.Column(db.Boolean())
-    # Для получения доступа к связанным объектам
-    roles = db.relationship('Role', secondary=roles_users, backref=db.backref('users', lazy='dynamic'))
 
     def __repr__(self):
         return "<{}:{}>".format(self.id, self.username)
@@ -52,18 +29,6 @@ class User(db.Model, UserMixin):
     @property
     def is_authenticated(self):
         return True
-
-    @property
-    def is_active(self):
-        return True
-
-    @property
-    def is_anonymous(self):
-        return False
-
-    # Flask-Security
-    def has_role(self, *args):
-        return set(args).issubset({role.name for role in self.roles})
 
     def get_id(self):
         return self.id
@@ -84,8 +49,6 @@ def load_user(user_id):
     return db.session.query(User).get(user_id)
 
 
-
-
 class Todo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.String(200), nullable=False)
@@ -99,6 +62,15 @@ class Sensors(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     temp = db.Column(db.Float)
     humidity = db.Column(db.Float)
+    voltage = db.Column(db.Integer)
+    date_send = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __repr__(self):
+        return '<Value %r>' % self.id
+
+
+class VoltageOff(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
     voltage = db.Column(db.Integer)
     date_send = db.Column(db.DateTime, default=datetime.utcnow)
 

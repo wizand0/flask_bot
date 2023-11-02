@@ -53,6 +53,32 @@
 
 
 
+    <table>
+        {%if voltage_off|length < 1 %} <h3>There are no values of voltage_off to show. Create one below</h3>
+            {% else %}
+
+            <tr>
+                <th>ID отключения</th>
+                <th>Time of voltage_off</th>
+
+            </tr>
+            {% for v_off in voltage_off %}
+            <tr>
+                <td>{{v_off.id}}</td>
+
+                <td>{{v_off.date_send}}</td>
+
+
+            </tr>
+            {% endfor %}
+    {% endif %}
+    </table>
+
+
+
+
+
+
 <div class="form">
 <form action="/" method="post" >
         <input type="text" name="content" id="content" placeholder="Enter task" />

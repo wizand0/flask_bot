@@ -13,7 +13,7 @@ from config import BaseConfig
 
 from .forms import LoginForm, RegistrationForm
 #from . import db
-from .models import User, Todo, Sensors
+from .models import User, Todo, Sensors, VoltageOff
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -37,9 +37,9 @@ def index():
 
     else:
         tasks = Todo.query.order_by(Todo.date_created).all()
-        sensor_values = Sensors.query.order_by(Sensors.date_send).all()  # - все записи для отрисовки графика; тип List
+        #sensor_values = Sensors.query.order_by(Sensors.date_send).all()  # - все записи для отрисовки графика; тип List
 
-        sensor_values1 = Sensors.query.order_by(Sensors.date_send).all()[:60] # Если в sensors_for_tab получается тип
+        sensor_values = Sensors.query.order_by(Sensors.date_send).all()[:60] # Если в sensor_values получается тип
         # Query то с помощью срезов остается List. В шаблоне индекс в части: {%if sensor_values|length < 1 %} нужен
         # именно List - у Query нет функции len()
 
@@ -48,6 +48,8 @@ def index():
         # sensors_for_tab = Sensors.query.order_by(Sensors.date_send).limit(3)
         sensors_for_tab = Sensors.query.order_by(Sensors.id.desc()).limit(
             5)  # последине 5 записей в обратном порядке для таблицы
+
+        voltage_off = VoltageOff.query.order_by(VoltageOff.date_send).all()[:15] #Последние 15 отключений электричества
 
         # sensors_for_tab = sensors_for_tab[::-1]
 
@@ -63,10 +65,12 @@ def index():
 
         # print(sensor_values)
         return render_template('index.html', tasks=tasks, sensor_values=sensor_values, labels2=date_value, data=data,
-                               voltage=voltage, humidity=humidity, sensors_for_tab=sensors_for_tab)  # IMP
+                               voltage=voltage, humidity=humidity, sensors_for_tab=sensors_for_tab,
+                               voltage_off=voltage_off)  # IMP
 
 
-# http://127.0.0.1:5000/ard_update?api_key=H20C8OAJ7KXGE3SS&field1=23&field2=44&field3=220&field4=0&field5=0&field6=0 - для тестирования входа API
+# http://127.0.0.1:5000/ard_update?api_key=H20C8OAJ7KXGE3SS&field1=23&field2=44&field3=220&field4=0&field5=0&field6=0
+# - для тестирования входа API
 
 @app.route('/admin/')
 @login_required
@@ -175,7 +179,17 @@ def ard_update():
         if voltage == 0:
             text = "Внимание: отключение электричества. Время: "
             #request_telegram = TELEGRAM_URL + BOT_TOKEN + part_url_for_1 + chat_id + part_url_for_2 + text + now_str
+            voltage_off = VoltageOff(voltage=voltage)
+            try:
+                db.session.add(voltage_off)
+                db.session.commit()
+
+            except:
+                db.session.rollback()
+                print("Ошибка добавления данных сенсоров в БД")
+
             return redirect(request_telegram)
+
 
         #elif:
         #elif voltage > 0 and alarm == 1:
