@@ -8,6 +8,10 @@
 
 For testing
 
+## TODO:
+- Send email;
+- Working with telegram bot;
+
 ### 📝 Table of Contents
 
 - [About](#about)
