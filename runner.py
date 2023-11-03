@@ -13,23 +13,17 @@ from aiogram.fsm.storage.memory import MemoryStorage
 from config import BaseConfig
 
 import config
-from app.handlers import router
+#from app.handlers import router
 
 FILENAME = "/data/todo.json" if "AMVERA" in os.environ else "todo.json"
 
 
-async def main():
-    bot = Bot(token=BaseConfig.BOT_TOKEN, parse_mode=ParseMode.HTML)
-    dp = Dispatcher(storage=MemoryStorage())
-    dp.include_router(router)
-    await bot.delete_webhook(drop_pending_updates=True)
-    await dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types())
+
 
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
 
-    # asyncio.run(main())
     app.run(debug=False)
 
 # flask db init
