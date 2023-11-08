@@ -17,10 +17,6 @@ import config
 
 FILENAME = "/data/todo.json" if "AMVERA" in os.environ else "todo.json"
 
-
-
-
-
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
 
