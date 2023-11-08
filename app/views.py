@@ -10,17 +10,12 @@ import config
 from config import BaseConfig
 
 
-
 from .forms import LoginForm, RegistrationForm
 #from . import db
 from .models import User, Todo, Sensors, VoltageOff
 from werkzeug.security import generate_password_hash, check_password_hash
 
-
 # from .utils import send_mail
-
-
-
 
 @app.route('/', methods=['GET', 'POST'])
 
@@ -47,9 +42,9 @@ def index():
 
         # sensors_for_tab = Sensors.query.order_by(Sensors.date_send).limit(3)
         sensors_for_tab = Sensors.query.order_by(Sensors.id.desc()).limit(
-            5)  # последине 5 записей в обратном порядке для таблицы
+5)  # последине 5 записей в обратном порядке для таблицы
 
-        voltage_off = VoltageOff.query.order_by(VoltageOff.date_send).all()[:15] #Последние 15 отключений электричества
+        voltage_off = VoltageOff.query.order_by(VoltageOff.date_send).all()[-15:] #Последние 15 отключений электричества
 
         # sensors_for_tab = sensors_for_tab[::-1]
 
@@ -68,7 +63,6 @@ def index():
                                voltage=voltage, humidity=humidity, sensors_for_tab=sensors_for_tab,
                                voltage_off=voltage_off)  # IMP
 
-
 # http://127.0.0.1:5000/ard_update?api_key=H20C8OAJ7KXGE3SS&field1=23&field2=44&field3=220&field4=0&field5=0&field6=0
 # - для тестирования входа API
 
@@ -76,7 +70,6 @@ def index():
 @login_required
 def admin():
     return render_template('admin.html')
-
 
 @app.route('/login', methods=['post', 'get'])
 def login():
@@ -94,51 +87,30 @@ def login():
     #return render_template('loging.html', form=form)
     return render_template('login.html', form=form)
 
-
 @app.route('/logout/')
 @login_required
 def logout():
     logout_user()
     flash("You have been logged out.")
     return redirect(url_for('login'))
-
-
 # register route
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
 
     if form.validate_on_submit():
-
         name = form.name.data
-
         email = form.email.data
-
         password = form.password.data
-        #print(form.password.data)
-
-
         username = form.username.data
-
         user = User(name=name, username=username, email=email)
         user.password_hash = generate_password_hash(password)
-
-
-        # user = User(username=username, email=email)
-        #user.password_hash = user.set_password(password)
-
         db.session.add(user)
-
         db.session.commit()
-
         flash("Registration was successfull, please login")
-
         return redirect(url_for('login'))
-
     else:
-
         print("Error form")
-
     return render_template('registration.html', form=form)
 
 
@@ -149,13 +121,8 @@ def ard_update():
     temp = float(request.args.get('field1'))
     humidity = int(request.args.get('field2'))
     voltage = int(request.args.get('field3'))
-    print(key == "H20C8OAJ7KXGE3SS")
 
-    print(key)
-    print("H20C8OAJ7KXGE3SS")
     if key == "H20C8OAJ7KXGE3SS":
-
-
         TELEGRAM_URL = "https://api.telegram.org/bot"
         part_url_for_1 = "/sendMessage?chat_id="
         chat_id = BaseConfig.CHAT_ID
@@ -164,22 +131,17 @@ def ard_update():
         BOT_TOKEN = BaseConfig.BOT_TOKEN
         now = datetime.datetime.now()
         now_str = str(now)
-        #request_telegram = TELEGRAM_URL + BOT_TOKEN + part_url_for_1 + chat_id + part_url_for_2 + text + now
+
         request_telegram = TELEGRAM_URL + BOT_TOKEN + part_url_for_1 + chat_id + part_url_for_2 + text + now_str
 
-
-
         new_values = Sensors(temp=temp, humidity=humidity, voltage=voltage)
-
         try:
             db.session.add(new_values)
             db.session.commit()
-
         except:
             db.session.rollback()
             print("Ошибка добавления данных сенсоров в БД")
             return "Ошибка добавления данных сенсоров в БД"
-
         if voltage == 0:
             text = "Внимание: отключение электричества. Время: "
             #request_telegram = TELEGRAM_URL + BOT_TOKEN + part_url_for_1 + chat_id + part_url_for_2 + text + now_str
@@ -187,40 +149,25 @@ def ard_update():
             try:
                 db.session.add(voltage_off)
                 db.session.commit()
-
             except:
                 db.session.rollback()
                 print("Ошибка добавления данных сенсоров в БД")
 
+            print(request_telegram)
+
             return redirect(request_telegram)
-
-
-        #elif:
-        #elif voltage > 0 and alarm == 1:
-        #    text = "Электроснабжение восстановлено. Дата: "
-        #    #request_telegram = TELEGRAM_URL + BOT_TOKEN + part_url_for_1 + chat_id + part_url_for_2 + text + now_str
-        #    alarm = 0
-        #    return redirect(request_telegram)
 
         else:
             return redirect("/")
 
-
-
         #return redirect(request_telegram)
 
     else:
-
         print("Неправильный API")
         # tasks = Todo.query.order_by(Todo.date_created).all()
-
         # sensor_values = Sensors.query.order_by(Sensors.date_send).all()
 
         #https://api.telegram.org/bot6164575119:AAEYx-IP2hSZgf2IpsHLztULW1I55jyhP2Q/sendMessage?chat_id=299472815&text=тдтолидлилил
-
-
-
-
 
         return redirect("/")
         # IMP
