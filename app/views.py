@@ -153,15 +153,10 @@ def ard_update():
                 db.session.rollback()
                 print("Ошибка добавления данных сенсоров в БД")
 
-            print(request_telegram)
-
             return redirect(request_telegram)
-
         else:
             return redirect("/")
-
         #return redirect(request_telegram)
-
     else:
         print("Неправильный API")
         # tasks = Todo.query.order_by(Todo.date_created).all()
