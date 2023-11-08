@@ -2,10 +2,10 @@ from app import db, login_manager
 from datetime import datetime
 from flask_login import (LoginManager, UserMixin, login_required,
                          login_user, current_user, logout_user)
-from flask_security import RoleMixin
+#from flask_security import RoleMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_admin import Admin
-from flask_admin.contrib.sqla import ModelView
+#from flask_admin import Admin
+#from flask_admin.contrib.sqla import ModelView
 
 
 @login_manager.user_loader
