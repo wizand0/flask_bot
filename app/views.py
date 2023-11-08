@@ -145,7 +145,7 @@ def register():
 #API для добавление в БД данных сенсоров на arduino
 @app.route('/ard_update',methods = ['POST', 'GET'])
 def ard_update():
-    api_key = request.args.get('api_key')
+    api_key = request.args.get('key')
     temp = float(request.args.get('field1'))
     humidity = int(request.args.get('field2'))
     voltage = int(request.args.get('field3'))
