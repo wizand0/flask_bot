@@ -145,11 +145,15 @@ def register():
 #API для добавление в БД данных сенсоров на arduino
 @app.route('/ard_update',methods = ['POST', 'GET'])
 def ard_update():
-    api_key = request.args.get('key')
+    key = request.args.get('key')
     temp = float(request.args.get('field1'))
     humidity = int(request.args.get('field2'))
     voltage = int(request.args.get('field3'))
-    if api_key == "H20C8OAJ7KXGE3SS":
+    print(key == "H20C8OAJ7KXGE3SS")
+
+    print(key)
+    print("H20C8OAJ7KXGE3SS")
+    if key == "H20C8OAJ7KXGE3SS":
 
 
         TELEGRAM_URL = "https://api.telegram.org/bot"
@@ -208,9 +212,9 @@ def ard_update():
     else:
 
         print("Неправильный API")
-        tasks = Todo.query.order_by(Todo.date_created).all()
+        # tasks = Todo.query.order_by(Todo.date_created).all()
 
-        sensor_values = Sensors.query.order_by(Sensors.date_send).all()
+        # sensor_values = Sensors.query.order_by(Sensors.date_send).all()
 
         #https://api.telegram.org/bot6164575119:AAEYx-IP2hSZgf2IpsHLztULW1I55jyhP2Q/sendMessage?chat_id=299472815&text=тдтолидлилил
 
@@ -218,7 +222,7 @@ def ard_update():
 
 
 
-        return render_template('index.html', tasks=tasks, sensor_values=sensor_values)
+        return redirect("/")
         # IMP
 
 
