@@ -120,10 +120,8 @@ def ard_update():
     key = request.args.get('key')
     temp = float(request.args.get('field1'))
     humidity = int(request.args.get('field2'))
-    voltage1 = int(request.args.get('field3'))
+    voltage = int(request.args.get('field3'))
 
-    if voltage1 < 50:
-        voltage = 0
 
     if key == BaseConfig.API_FLASK_ARDUINO:
         TELEGRAM_URL = "https://api.telegram.org/bot"
@@ -145,7 +143,7 @@ def ard_update():
             db.session.rollback()
             print("Ошибка добавления данных сенсоров в БД")
             return "Ошибка добавления данных сенсоров в БД"
-        if voltage == 0:
+        if voltage < 15:
             text = "Внимание: отключение электричества. Время: "
             #request_telegram = TELEGRAM_URL + BOT_TOKEN + part_url_for_1 + chat_id + part_url_for_2 + text + now_str
             voltage_off = VoltageOff(voltage=voltage)
