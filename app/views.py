@@ -120,7 +120,10 @@ def ard_update():
     key = request.args.get('key')
     temp = float(request.args.get('field1'))
     humidity = int(request.args.get('field2'))
-    voltage = int(request.args.get('field3'))
+    voltage1 = int(request.args.get('field3'))
+
+    if voltage1 < 50:
+        voltage = 0
 
     if key == BaseConfig.API_FLASK_ARDUINO:
         TELEGRAM_URL = "https://api.telegram.org/bot"
