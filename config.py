@@ -17,6 +17,7 @@ class BaseConfig:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     BOT_TOKEN = environ.get("BOT_TOKEN")
     CHAT_ID = environ.get("CHAT_ID")
+    API_FLASK_ARDUINO = environ.get("API_FLASK_ARDUINO")
 
 
 

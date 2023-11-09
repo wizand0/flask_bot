@@ -122,7 +122,7 @@ def ard_update():
     humidity = int(request.args.get('field2'))
     voltage = int(request.args.get('field3'))
 
-    if key == "H20C8OAJ7KXGE3SS":
+    if key == BaseConfig.API_FLASK_ARDUINO:
         TELEGRAM_URL = "https://api.telegram.org/bot"
         part_url_for_1 = "/sendMessage?chat_id="
         chat_id = BaseConfig.CHAT_ID
@@ -153,7 +153,13 @@ def ard_update():
                 db.session.rollback()
                 print("Ошибка добавления данных сенсоров в БД")
 
-            return redirect(request_telegram)
+            #return redirect(request_telegram)
+            resp = requests.get(request_telegram)
+            api_answer = resp.json()
+            print(type(api_answer))
+            print(api_answer)
+
+            return render_template("ok.html", api_answer=api_answer)
         else:
             return redirect("/")
         #return redirect(request_telegram)
@@ -161,12 +167,9 @@ def ard_update():
         print("Неправильный API")
         # tasks = Todo.query.order_by(Todo.date_created).all()
         # sensor_values = Sensors.query.order_by(Sensors.date_send).all()
-
         #https://api.telegram.org/bot6164575119:AAEYx-IP2hSZgf2IpsHLztULW1I55jyhP2Q/sendMessage?chat_id=299472815&text=тдтолидлилил
-
         return redirect("/")
         # IMP
-
 
 @app.route('/delete/<int:id>')
 def delete(id):
