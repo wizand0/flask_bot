@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+
+{% block title %} API answer {% endblock %}
+
+{% block body %}
+
+<h1>API answer result</h1>
+<br>
+<br>
+<br>
+{% for key, value in api_answer.items() %}
+<p>{{ key }} : {{ value }}</p>
+{% endfor %}
+<br>
+<br>
+{% endblock %}
