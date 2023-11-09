@@ -8,8 +8,7 @@ __pycache__/
 
 
 ### Flask ###
-instance/*
-instance/*.db
+
 !instance/.gitignore
 .webassets-cache
 .env
