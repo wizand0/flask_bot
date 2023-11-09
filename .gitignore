@@ -1,8 +1,14 @@
 # Created by https://www.toptal.com/developers/gitignore/api/flask
 # Edit at https://www.toptal.com/developers/gitignore?templates=flask
 
+
+.idea
+__pycache__/
+
+
+
 ### Flask ###
-instance/*
+
 !instance/.gitignore
 .webassets-cache
 .env
@@ -75,7 +81,7 @@ db.sqlite3
 db.sqlite3-journal
 
 # Flask stuff:
-instance/
+# instance/
 
 # Scrapy stuff:
 .scrapy

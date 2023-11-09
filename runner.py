@@ -20,7 +20,7 @@ FILENAME = "/data/todo.json" if "AMVERA" in os.environ else "todo.json"
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
 
-    app.run(debug=True)
+    app.run(debug=False)
 
 # flask db init
 # flask db migrate -m "Initial migration."
@@ -50,3 +50,7 @@ if __name__ == "__main__":
 # https://cloud.amvera.ru/projects/flask-bot
 # git push amvera dev:master --force
 #
+# Вам просто нужно правильно написать путь, но тут нет единого рецепта из-за возможных разных технологий, мы поэтому в
+# документацию и не стали писать что-то конкретное, чтобы не путать.
+# Обычно это выглядит как-то так \\\
+# Просто нужно нужное количество слэшей указать.
