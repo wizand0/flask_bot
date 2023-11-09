@@ -4,7 +4,7 @@
 
 .idea
 __pycache__/
-*.prodbd.db
+
 
 
 ### Flask ###
@@ -81,7 +81,7 @@ db.sqlite3
 db.sqlite3-journal
 
 # Flask stuff:
-instance/
+# instance/
 
 # Scrapy stuff:
 .scrapy
