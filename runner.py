@@ -20,7 +20,7 @@ FILENAME = "/data/todo.json" if "AMVERA" in os.environ else "todo.json"
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
 
-    app.run(debug=True)
+    app.run(debug=False)
 
 # flask db init
 # flask db migrate -m "Initial migration."
