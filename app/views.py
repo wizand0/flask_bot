@@ -34,7 +34,7 @@ def index():
         tasks = Todo.query.order_by(Todo.date_created).all()
         #sensor_values = Sensors.query.order_by(Sensors.date_send).all()  # - все записи для отрисовки графика; тип List
 
-        sensor_values = Sensors.query.order_by(Sensors.date_send).all()[-60:] # Если в sensor_values получается тип
+        sensor_values = Sensors.query.order_by(Sensors.date_send).all()[-120::5] # Если в sensor_values получается тип
         # Query то с помощью срезов остается List. В шаблоне индекс в части: {%if sensor_values|length < 1 %} нужен
         # именно List - у Query нет функции len()
 
