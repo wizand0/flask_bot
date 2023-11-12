@@ -4,7 +4,7 @@ from flask_login import login_required, login_user, current_user, logout_user
 
 from . import app
 from app import db, login_manager
-import datetime
+from datetime import datetime, timedelta
 
 import config
 from config import BaseConfig
@@ -130,12 +130,12 @@ def ard_update():
         part_url_for_2 = "&text="
         text = "Внимание: ОТКЛЮЧЕНИЕ ЭЛЕКТРИЧЕСТВА. ДАТА: "
         BOT_TOKEN = BaseConfig.BOT_TOKEN
-        now = datetime.datetime.now()
+        now = datetime.now() + timedelta(hours=3)
         now_str = str(now)
 
         request_telegram = TELEGRAM_URL + BOT_TOKEN + part_url_for_1 + chat_id + part_url_for_2 + text + now_str
 
-        new_values = Sensors(temp=temp, humidity=humidity, voltage=voltage)
+        new_values = Sensors(temp=temp, humidity=humidity, voltage=voltage, date_send=now)
         try:
             db.session.add(new_values)
             db.session.commit()
@@ -146,7 +146,7 @@ def ard_update():
         if voltage < 15:
             text = "Внимание: отключение электричества. Время: "
             #request_telegram = TELEGRAM_URL + BOT_TOKEN + part_url_for_1 + chat_id + part_url_for_2 + text + now_str
-            voltage_off = VoltageOff(voltage=voltage)
+            voltage_off = VoltageOff(voltage=voltage, date_send=now)
             try:
                 db.session.add(voltage_off)
                 db.session.commit()

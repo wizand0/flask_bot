@@ -22,6 +22,7 @@ class User(db.Model, UserMixin):
     password_hash = db.Column(db.String(100), nullable=False)
     created_on = db.Column(db.DateTime(), default=datetime.now)
 
+
     def __repr__(self):
         return "<{}:{}>".format(self.id, self.username)
 
