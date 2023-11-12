@@ -34,7 +34,7 @@ def index():
         tasks = Todo.query.order_by(Todo.date_created).all()
         #sensor_values = Sensors.query.order_by(Sensors.date_send).all()  # - все записи для отрисовки графика; тип List
 
-        sensor_values = Sensors.query.order_by(Sensors.date_send).all()[:60] # Если в sensor_values получается тип
+        sensor_values = Sensors.query.order_by(Sensors.date_send).all()[-120::5] # Если в sensor_values получается тип
         # Query то с помощью срезов остается List. В шаблоне индекс в части: {%if sensor_values|length < 1 %} нужен
         # именно List - у Query нет функции len()
 
@@ -42,7 +42,7 @@ def index():
 
         # sensors_for_tab = Sensors.query.order_by(Sensors.date_send).limit(3)
         sensors_for_tab = Sensors.query.order_by(Sensors.id.desc()).limit(
-5)  # последине 5 записей в обратном порядке для таблицы
+25)  # последине 5 записей в обратном порядке для таблицы
 
         voltage_off = VoltageOff.query.order_by(VoltageOff.date_send).all()[-15:] #Последние 15 отключений электричества
 
@@ -122,6 +122,7 @@ def ard_update():
     humidity = int(request.args.get('field2'))
     voltage = int(request.args.get('field3'))
 
+
     if key == BaseConfig.API_FLASK_ARDUINO:
         TELEGRAM_URL = "https://api.telegram.org/bot"
         part_url_for_1 = "/sendMessage?chat_id="
@@ -142,7 +143,7 @@ def ard_update():
             db.session.rollback()
             print("Ошибка добавления данных сенсоров в БД")
             return "Ошибка добавления данных сенсоров в БД"
-        if voltage == 0:
+        if voltage < 15:
             text = "Внимание: отключение электричества. Время: "
             #request_telegram = TELEGRAM_URL + BOT_TOKEN + part_url_for_1 + chat_id + part_url_for_2 + text + now_str
             voltage_off = VoltageOff(voltage=voltage)
