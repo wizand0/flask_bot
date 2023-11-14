@@ -85,3 +85,9 @@ http://localhost:5000
 - [Python](https://www.python.org/) - Programming Language
 - SQL-ALchemy
 - Telegram api
+
+### Changelog
+v. 1.0.5. - added login and registration pages. Now only registered user can view and edit data.
+v. 1.0.4. - minor fixes for stability.
+v. 1.0.0. - functionality for sending telegram messages.
+v. 0.8.0 - logging functionality.
