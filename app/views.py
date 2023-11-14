@@ -18,6 +18,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 # from .utils import send_mail
 
 @app.route('/', methods=['GET', 'POST'])
+@login_required
 
 def index():
     if request.method == 'POST':
