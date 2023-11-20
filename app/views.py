@@ -158,9 +158,10 @@ def ard_update():
 #        print(delta)
 #        print(delta1)
 
-        if delta1 > 15:
+        if delta1 > 13:
             text = "Внимание: Большое время между отправкой данных. Время: "
-            request_telegram = TELEGRAM_URL + BOT_TOKEN + part_url_for_1 + chat_id + part_url_for_2 + text + now_str
+            request_telegram = TELEGRAM_URL + BOT_TOKEN + part_url_for_1 + chat_id + part_url_for_2 + text + str(delta1)\
+                               + "мин"
             # return redirect(request_telegram)
             resp = requests.get(request_telegram)
             api_answer = resp.json()
