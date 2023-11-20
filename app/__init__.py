@@ -8,11 +8,13 @@ from flask_migrate import Migrate
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_required, login_user, current_user, logout_user
 from .forms import ContactForm, LoginForm
+from flask_bootstrap import Bootstrap5
 
 
 
 # создание экземпляра приложения
 app = Flask(__name__)
+bootstrap = Bootstrap5(app)
 # app.config.from_object(os.environ.get('FLASK_ENV') or 'config.DevelopementConfig')
 #app.config.from_object('config.DevelopementConfig')
 app.config.from_object('config.ProductionConfig')
