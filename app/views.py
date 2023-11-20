@@ -19,7 +19,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 @app.route('/', methods=['GET', 'POST'])
 @login_required
-
 def index():
     if request.method == 'POST':
         task_content = request.form['content']  # Form input Name tag
@@ -48,6 +47,9 @@ def index():
         voltage_off = VoltageOff.query.order_by(VoltageOff.date_send).all()[-15:] #Последние 15 отключений электричества
 
         # sensors_for_tab = sensors_for_tab[::-1]
+
+
+
 
         date_value = []
         data = []
@@ -134,7 +136,7 @@ def ard_update():
         now = datetime.now() + timedelta(hours=3)
         now_str = str(now)
 
-        request_telegram = TELEGRAM_URL + BOT_TOKEN + part_url_for_1 + chat_id + part_url_for_2 + text + now_str
+        #request_telegram = TELEGRAM_URL + BOT_TOKEN + part_url_for_1 + chat_id + part_url_for_2 + text + now_str
 
         new_values = Sensors(temp=temp, humidity=humidity, voltage=voltage, date_send=now)
         try:
@@ -144,9 +146,34 @@ def ard_update():
             db.session.rollback()
             print("Ошибка добавления данных сенсоров в БД")
             return "Ошибка добавления данных сенсоров в БД"
+
+        obj1, obj2 = Sensors.query.order_by(Sensors.id.desc()).limit(2)
+
+#        print(obj2.date_send)
+#        print(obj1.date_send)
+
+        delta = obj1.date_send - obj2.date_send
+        delta1 = int(delta.total_seconds() / 60)
+
+#        print(delta)
+#        print(delta1)
+
+        if delta1 > 15:
+            text = "Внимание: Большое время между отправкой данных. Время: "
+            request_telegram = TELEGRAM_URL + BOT_TOKEN + part_url_for_1 + chat_id + part_url_for_2 + text + now_str
+            # return redirect(request_telegram)
+            resp = requests.get(request_telegram)
+            api_answer = resp.json()
+            api_answer_status = api_answer["ok"]
+#            print(type(api_answer))
+#            print(api_answer[0])
+
+            return render_template("ok.html", api_answer_status=api_answer_status)
+
+
         if voltage < 15:
             text = "Внимание: отключение электричества. Время: "
-            #request_telegram = TELEGRAM_URL + BOT_TOKEN + part_url_for_1 + chat_id + part_url_for_2 + text + now_str
+            request_telegram = TELEGRAM_URL + BOT_TOKEN + part_url_for_1 + chat_id + part_url_for_2 + text + now_str
             voltage_off = VoltageOff(voltage=voltage, date_send=now)
             try:
                 db.session.add(voltage_off)
@@ -158,10 +185,14 @@ def ard_update():
             #return redirect(request_telegram)
             resp = requests.get(request_telegram)
             api_answer = resp.json()
-            print(type(api_answer))
-            print(api_answer)
+            api_answer_status = api_answer["ok"]
+#            print(resp)
+#            print("______________________________")
 
-            return render_template("ok.html", api_answer=api_answer)
+#            print(type(api_answer))
+#            print(api_answer_status)
+
+            return render_template("ok.html", api_answer_status=api_answer_status)
         else:
             return redirect("/")
         #return redirect(request_telegram)
